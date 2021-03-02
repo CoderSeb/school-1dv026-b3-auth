@@ -27,4 +27,19 @@ export class AuthenticationController {
       next(err)
     }
   }
+
+  /**
+   * Logs in a user.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async loginUser (req, res, next) {
+    try {
+      res.status(200).send('User login reached...')
+    } catch (err) {
+      next(err)
+    }
+  }
 }

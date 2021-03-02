@@ -16,7 +16,7 @@ router.use('/', (req, res, next) => {
 })
 
 router.post('/register', controller.registerUser)
-
+router.post('/login', controller.loginUser)
 
 // Catch 404 (ALWAYS keep this as the last route).
 router.use('*', (req, res, next) => next(res.sendStatus(404)))
