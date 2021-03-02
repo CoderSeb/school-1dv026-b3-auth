@@ -11,9 +11,6 @@ import { AuthenticationController } from '../controllers/authentication-controll
 
 export const router = express.Router()
 const controller = new AuthenticationController()
-router.use('/', (req, res, next) => {
-  res.status(200).send('Reached the root of auth!')
-})
 
 router.post('/register', controller.registerUser)
 router.post('/login', controller.loginUser)

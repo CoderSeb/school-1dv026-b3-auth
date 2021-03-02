@@ -6,8 +6,6 @@
  */
 
 // Imports
-import Bcrypt from 'bcrypt'
-import { User } from '../models/user.js'
 
 /**
  * Encapsulates a controller.
