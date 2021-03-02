@@ -5,13 +5,18 @@
  * @version 1.0.0
  */
 
+// Imports
 import express from 'express'
+import { AuthenticationController } from '../controllers/authentication-controller.js'
 
 export const router = express.Router()
-
+const controller = new AuthenticationController()
 router.use('/', (req, res, next) => {
   res.status(200).send('Reached the root of auth!')
 })
+
+router.post('/register', controller.registerUser)
+
 
 // Catch 404 (ALWAYS keep this as the last route).
 router.use('*', (req, res, next) => next(res.sendStatus(404)))
