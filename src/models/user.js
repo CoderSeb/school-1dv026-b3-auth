@@ -13,18 +13,16 @@ import bcrypt from 'bcrypt'
 const schema = new mongoose.Schema({
   email: {
     type: String,
-    required: [true, 'Please enter an email.'],
-    minlength: 5,
-    maxlength: 255,
+    required: true,
     unique: true,
     lowercase: true,
-    validate: [val.isEmail, 'Please enter a valid email.']
+    validate: val.isEmail
   },
   password: {
     type: String,
-    required: [true, 'Please enter a password.'],
-    minlength: [6, 'Minimum password length is 6 characters.'],
-    maxlength: 1024
+    required: true,
+    minlength: 10,
+    maxlength: 1000
   }
 }, {
   timestamps: true

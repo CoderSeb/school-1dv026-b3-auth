@@ -8,6 +8,7 @@
 // Imports
 import mongoose from 'mongoose'
 import { User } from '../models/user.js'
+import jwt from 'jsonwebtoken'
 
 /**
  * Encapsulates a controller.
@@ -58,7 +59,19 @@ export class AuthenticationController {
       } else {
         const isValid = await user.valPass(password)
         if (isValid) {
-          res.status(200).send('It works! Correct password!')
+          jwt.sign({
+            user: {
+              id: user.id,
+              email: user.email
+            }
+          }, process.env.PRIVATE_API_KEY, (err, token) => {
+            res.json({
+              access_token: token
+            })
+            if (err) {
+              res.sendStatus(500)
+            }
+          })
         } else {
           res.status(409).send('Invalid credentials')
         }

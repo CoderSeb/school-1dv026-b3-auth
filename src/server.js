@@ -29,8 +29,9 @@ const main = async () => {
     if (err.status === 404) {
       return res
         .status(404)
+    } else {
+      return res.status(500)
     }
-
   })
 
   // Register routes.
