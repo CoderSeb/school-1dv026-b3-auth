@@ -6,6 +6,8 @@
  */
 
 // Imports
+import mongoose from 'mongoose'
+import { User } from '../models/user.js'
 
 /**
  * Encapsulates a controller.
@@ -20,8 +22,21 @@ export class AuthenticationController {
    */
   async registerUser (req, res, next) {
     try {
-      res.status(200).send('User post reached...')
+      const { email, password } = req.body
+      const user = new User({
+        email: email,
+        password: password
+      })
+
+      await user.save()
+      res.status(201).send({ id: user.id })
     } catch (err) {
+      if (err instanceof mongoose.Error.ValidationError) {
+        res.status(400).send('Validation Error')
+      }
+      if (err.code === 11000) {
+        res.status(409).send('Duplicate Keys')
+      }
       next(err)
     }
   }
@@ -35,7 +50,19 @@ export class AuthenticationController {
    */
   async loginUser (req, res, next) {
     try {
-      res.status(200).send('User login reached...')
+      const { email, password } = req.body
+      const user = await User.findOne({ email: email })
+
+      if (!user) {
+        res.status(409).send('Invalid credentials')
+      } else {
+        const isValid = await user.valPass(password)
+        if (isValid) {
+          res.status(200).send('It works! Correct password!')
+        } else {
+          res.status(409).send('Invalid credentials')
+        }
+      }
     } catch (err) {
       next(err)
     }

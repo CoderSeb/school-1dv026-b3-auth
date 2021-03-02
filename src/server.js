@@ -9,18 +9,29 @@ import express from 'express'
 import helmet from 'helmet'
 import logger from 'morgan'
 import { router } from './routes/router.js'
+import { connectDB } from './config/mongo.js'
 
 /**
  * Main function of the authentication service.
  */
 const main = async () => {
-  // TODO: MongoDB connection.
+  await connectDB()
 
   // Creates an express application.
   const app = express()
   app.use(helmet())
   app.use(logger('dev'))
   app.use(express.json())
+
+  // Error handler.
+  app.use(function (err, req, res, next) {
+    // 404 Not Found.
+    if (err.status === 404) {
+      return res
+        .status(404)
+    }
+
+  })
 
   // Register routes.
   app.use('/', router)
