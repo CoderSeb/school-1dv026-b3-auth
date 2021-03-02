@@ -20,6 +20,7 @@ const main = async () => {
   const app = express()
   app.use(helmet())
   app.use(logger('dev'))
+  app.use(express.json())
 
   // Register routes.
   app.use('/', router)
