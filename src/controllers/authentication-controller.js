@@ -9,6 +9,7 @@
 import mongoose from 'mongoose'
 import { User } from '../models/user.js'
 import jwt from 'jsonwebtoken'
+import fs from 'fs-extra'
 
 /**
  * Encapsulates a controller.
@@ -63,7 +64,7 @@ export class AuthenticationController {
             id: user.id,
             email: user.email
           }
-          const createdToken = generateToken(tokenData)
+          const createdToken = await generateToken(tokenData)
           res.json({
             access_token: createdToken
           })
@@ -83,6 +84,11 @@ export class AuthenticationController {
  * @param {object} tokenData - As the data to be contained within the token.
  * @returns {string} - The json web token.
  */
-function generateToken (tokenData) {
-  return jwt.sign(tokenData, process.env.PUBLIC_API_KEY, { expiresIn: '15m' })
+async function generateToken (tokenData) {
+  const signOptions = {
+    expiresIn: '15m',
+    algorithm: 'RS256'
+  }
+  const privateKey = fs.readFileSync('./private.pem', 'utf8')
+  return jwt.sign(tokenData, privateKey, signOptions)
 }
