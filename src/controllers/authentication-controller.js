@@ -59,18 +59,13 @@ export class AuthenticationController {
       } else {
         const isValid = await user.valPass(password)
         if (isValid) {
-          jwt.sign({
-            user: {
-              id: user.id,
-              email: user.email
-            }
-          }, process.env.PRIVATE_API_KEY, (err, token) => {
-            res.json({
-              access_token: token
-            })
-            if (err) {
-              res.sendStatus(500)
-            }
+          const tokenData = {
+            id: user.id,
+            email: user.email
+          }
+          const createdToken = generateToken(tokenData)
+          res.json({
+            access_token: createdToken
           })
         } else {
           res.status(409).send('Invalid credentials')
@@ -80,4 +75,14 @@ export class AuthenticationController {
       next(err)
     }
   }
+}
+
+/**
+ * Function that returns a json web token containing the data given.
+ *
+ * @param {object} tokenData - As the data to be contained within the token.
+ * @returns {string} - The json web token.
+ */
+function generateToken (tokenData) {
+  return jwt.sign(tokenData, process.env.PUBLIC_API_KEY, { expiresIn: '15m' })
 }
