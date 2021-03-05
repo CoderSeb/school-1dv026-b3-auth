@@ -86,7 +86,7 @@ export class AuthenticationController {
  */
 async function generateToken (tokenData) {
   const signOptions = {
-    expiresIn: '15m',
+    expiresIn: '10h',
     algorithm: 'RS256'
   }
   const privateKey = fs.readFileSync('./private.pem', 'utf8')
