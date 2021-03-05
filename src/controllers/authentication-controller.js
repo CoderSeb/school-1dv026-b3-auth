@@ -9,7 +9,6 @@
 import mongoose from 'mongoose'
 import { User } from '../models/user.js'
 import jwt from 'jsonwebtoken'
-import fs from 'fs-extra'
 
 /**
  * Encapsulates a controller.
@@ -89,6 +88,6 @@ async function generateToken (tokenData) {
     expiresIn: '10h',
     algorithm: 'RS256'
   }
-  const privateKey = fs.readFileSync('./private.pem', 'utf8')
+  const privateKey = Buffer.from(process.env.PRIVATE_KEY64, 'base64')
   return jwt.sign(tokenData, privateKey, signOptions)
 }
