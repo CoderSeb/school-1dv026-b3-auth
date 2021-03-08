@@ -85,7 +85,7 @@ export class AuthenticationController {
  */
 async function generateToken (tokenData) {
   const signOptions = {
-    expiresIn: '10h',
+    expiresIn: '2h',
     algorithm: 'RS256'
   }
   const privateKey = Buffer.from(process.env.PRIVATE_KEY64, 'base64')
