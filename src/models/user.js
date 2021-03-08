@@ -7,7 +7,7 @@
 
 import mongoose from 'mongoose'
 import val from 'validator'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 // Create a schema.
 const schema = new mongoose.Schema({
