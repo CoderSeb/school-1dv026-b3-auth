@@ -9,6 +9,7 @@
 import mongoose from 'mongoose'
 import { User } from '../models/user.js'
 import jwt from 'jsonwebtoken'
+import createError from 'http-errors'
 
 /**
  * Encapsulates a controller.
@@ -36,7 +37,7 @@ export class AuthenticationController {
         res.sendStatus(400)
       }
       if (err.code === 11000) {
-        res.sendStatus(409)
+        res.status(409).send(createError(409, 'Duplicated Keys'))
       }
       next(err)
     }
